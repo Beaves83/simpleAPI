@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-router = APIRouter()
+router = APIRouter(prefix="/users", 
+                   tags=["users"],
+                   responses={404: {"message": "No encontrado"}})
 
 #Entidad user
 class User(BaseModel): #Usando BaseModel, crea por debajo toda la estructura de una clase como el constructor
@@ -16,39 +18,39 @@ users_list = [User(id=1, name = "Bibi", surname= "Ruiz", url ="bruiz.es", age=39
            User(id=3, name = "Alvaro", surname= "Ruiz", url ="aruiz.es", age=8 ),
            User(id=4, name = "Martin", surname= "Ruiz", url ="mruiz.es", age=4 )]
 
-@router.get("/usersjson")
+@router.get("/json")
 async def usersjson():
     return [{"name":"Bibi", "surname": "Ruiz", "url": "bruiz.es"},
             {"name":"Cristina", "surname": "Usero", "url": "cusero.es"},
             {"name":"Álvaro", "surname": "Ruiz", "url": "aruiz.es"},
             {"name":"Martín", "surname": "Ruiz", "url": "mruiz.es"}]
 
-@router.get("/userclass", response_model=User)
+@router.get("/class", response_model=User)
 async def userclass():
     return User(name = "Bibi", surname= "Ruiz", url ="bruiz.es", age=39 )
 
-@router.get("/users")
+@router.get("/")
 async def users():
     return users_list
 
 # Path
-@router.get("/user/{id}", response_model=User)
+@router.get("/{id}", response_model=User)
 async def user(id: int):
     return search_user(id)
     
 # Query
-@router.get("/userquery/", response_model=User)
+@router.get("/query/", response_model=User)
 async def user(id: int):
     return search_user(id)
 
-@router.post("/user/", response_model=User, status_code=201)
+@router.post("/", response_model=User, status_code=201)
 async def user(user: User):
     if type(search_user(user.id)) == User:
         raise HTTPException(status_code=404, detail="El usuario ya existe")
     users_list.append(user)
     return user
 
-@router.put("/user/")
+@router.put("/")
 async def user(user: User):  
     found = False
     for index, saved_user in enumerate(users_list):
@@ -61,7 +63,7 @@ async def user(user: User):
     
     return user
     
-@router.delete("/user/{id}")
+@router.delete("/{id}")
 async def user(id: int):
     found = False
     for index, saved_user in enumerate(users_list):
