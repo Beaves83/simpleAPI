@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import APIRouter
 from pydantic import BaseModel
 
-app = FastAPI()
+router = APIRouter()
 
 class User(BaseModel): #Usando BaseModel, crea por debajo toda la estructura de una clase como el constructor
     id: int
@@ -16,6 +16,6 @@ users_list = [User(id=1, name = "Bibi", surname= "Ruiz", url ="bruiz.es", age=39
            User(id=4, name = "Martin", surname= "Ruiz", url ="mruiz.es", age=4 )]
 
 
-@app.get("/products")
+@router.get("/products")
 async def products():
     return ["Producto 1", "Producto 2", "Producto 3", "Producto 4", "Producto 5"]
