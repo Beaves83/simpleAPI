@@ -1,3 +1,5 @@
+### Users API con autorización OAuth2 básica ###
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
