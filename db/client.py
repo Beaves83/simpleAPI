@@ -8,5 +8,11 @@
 
 from pymongo import MongoClient
 
-db_client = MongoClient().local
+# Conexión BBDD local
+# db_client = MongoClient().local
+
+
+# Conexión BBDD remota
+db_client = MongoClient("mongodb+srv://admin:admin@cluster0.xvfnrwc.mongodb.net/").python_fastapi_bbdd.test
+
 
